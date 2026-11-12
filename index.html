@@ -1,0 +1,144 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>JSON / XML Workbench</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Mono:wght@400;500&family=IBM+Plex+Sans:wght@400;500;600&display=swap" rel="stylesheet">
+<!-- OLD CODE
+<link rel="stylesheet" href="styles.css">
+END OLD CODE -->
+<link rel="stylesheet" href="css/styles.css">
+</head>
+<body>
+
+<header class="bar">
+  <h1>JSON / XML Workbench</h1>
+  <div class="seg" role="group" aria-label="Input type">
+    <button type="button" data-mode="auto" class="on">Auto</button>
+    <button type="button" data-mode="json">JSON</button>
+    <button type="button" data-mode="xml">XML</button>
+  </div>
+  <div class="opts">
+    <label>Indent
+      <select id="indent">
+        <option value="2">2 spaces</option>
+        <option value="4">4 spaces</option>
+        <option value="tab">Tab</option>
+      </select>
+    </label>
+    <label id="sortWrap"><input type="checkbox" id="sortKeys"> Sort keys</label>
+    <label title="JSON: trims numbers like 1.500 to 1.5 and drops needless escapes. XML: strips comments, collapses whitespace in text, turns empty elements into self-closing tags.">
+      <input type="checkbox" id="aggressive" checked> Aggressive minify
+    </label>
+  </div>
+</header>
+
+<nav class="actions">
+  <button type="button" class="btn primary" id="btnFormat">Format</button>
+  <button type="button" class="btn primary" id="btnMinify">Minify</button>
+  <button type="button" class="btn" id="btnConvert">Convert to XML</button>
+  <button type="button" class="btn" id="btnEscape">Escape as string</button>
+  <button type="button" class="btn" id="btnUnescape">Unescape string</button>
+  <span class="hint">Ctrl+Enter to format, Ctrl+Shift+Enter to minify</span>
+</nav>
+
+<main>
+  <section class="pane" aria-label="Input">
+    <div class="pane-head">
+      <h2>Input</h2>
+      <span id="detected" class="tag"></span>
+      <div class="spacer"></div>
+      <button type="button" class="ghost" id="btnSample">Sample</button>
+      <label class="ghost filebtn">Open file<input type="file" id="fileIn" accept=".json,.xml,.txt,.config,.csproj,application/json,text/xml" hidden></label>
+      <button type="button" class="ghost" id="btnClear">Clear</button>
+    </div>
+    <div class="editor" id="editor">
+      <pre id="gutter" aria-hidden="true">1</pre>
+      <textarea id="input" spellcheck="false" wrap="off" autocomplete="off" autocapitalize="off"
+        placeholder="Paste or type JSON or XML here, or drop a file"></textarea>
+    </div>
+  </section>
+
+  <section class="pane" aria-label="Output">
+    <div class="pane-head">
+      <div class="tabs" role="tablist">
+        <button type="button" role="tab" data-tab="text" aria-selected="true">Text</button>
+        <button type="button" role="tab" data-tab="tree" aria-selected="false">Tree</button>
+        <button type="button" role="tab" data-tab="grid" aria-selected="false">Grid</button>
+      </div>
+      <div class="search">
+        <input id="search" type="search" placeholder="Search output" autocomplete="off">
+        <span id="searchCount"></span>
+        <button type="button" class="ghost" id="prevHit">Prev</button>
+        <button type="button" class="ghost" id="nextHit">Next</button>
+      </div>
+      <div class="spacer"></div>
+      <button type="button" class="ghost" id="btnCopy">Copy</button>
+      <button type="button" class="ghost" id="btnDownload">Download</button>
+      <button type="button" class="ghost" id="btnUse">Use as input</button>
+    </div>
+
+    <div class="view" id="viewText">
+      <pre id="output" class="code" data-empty="Results show up here. Format, minify or convert the input to get started."></pre>
+    </div>
+
+    <div class="view" id="viewTree" hidden>
+      <div id="pathBar" hidden>
+        <span id="pathText"></span>
+        <button type="button" class="link" id="btnCopyPath">Copy path</button>
+      </div>
+      <div id="treeHits" hidden></div>
+      <div id="tree"></div>
+    </div>
+
+    <!-- OLD CODE
+    <div class="view" id="viewGrid" hidden>
+      <div class="grid-head">
+        <label>Table <select id="gridSource"></select></label>
+        <span id="gridCount"></span>
+      </div>
+      <div class="grid-wrap"><table id="grid"></table></div>
+    </div>
+    END OLD CODE -->
+    <div class="view" id="viewGrid" hidden>
+      <div class="grid-head">
+        <div class="seg small" role="group" aria-label="Grid layout">
+          <button type="button" data-gmode="nested" class="on">Nested</button>
+          <button type="button" data-gmode="flat">Flat table</button>
+        </div>
+        <span id="nestedTools">
+          <button type="button" class="link" id="btnExpandAll">Expand all</button>
+          <button type="button" class="link" id="btnCollapseAll">Collapse all</button>
+        </span>
+        <label id="flatTools" hidden>Table <select id="gridSource"></select></label>
+        <span id="gridCount"></span>
+      </div>
+      <div id="gridPath" class="grid-path" hidden>
+        <span id="gridPathText"></span>
+        <button type="button" class="link" id="btnCopyGridPath">Copy path</button>
+      </div>
+      <div class="grid-wrap" id="flatWrap" hidden><table id="grid"></table></div>
+      <div class="grid-wrap ng-wrap" id="nestedWrap"></div>
+    </div>
+  </section>
+</main>
+
+<footer class="status">
+  <span id="valid" class="state">Waiting for input</span>
+  <span id="toast" aria-live="polite"></span>
+  <div class="sizes">
+    <span id="inSize"></span>
+    <span id="outSize"></span>
+    <div class="meter" title="Output size compared to input"><div id="meterBar"></div></div>
+  </div>
+</footer>
+
+<!-- OLD CODE
+<script src="app.js"></script>
+END OLD CODE -->
+<script src="js/app.js"></script>
+</body>
+</html>

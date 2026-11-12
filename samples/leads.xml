@@ -1,0 +1,26 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!-- Lead export -->
+<leads campaign="Spring Auto Insurance" generated="2026-11-12T09:30:00Z">
+  <lead id="1001">
+    <name>Priya Sharma</name>
+    <email>priya.s@example.com</email>
+    <state>CA</state>
+    <score>87.5</score>
+    <consent tcpa="true"></consent>
+  </lead>
+  <lead id="1002">
+    <name>Marcus Lee</name>
+    <email>mlee@example.com</email>
+    <state>TX</state>
+    <score>64</score>
+    <consent tcpa="true"></consent>
+  </lead>
+  <lead id="1003">
+    <name>Elena Ruiz</name>
+    <email>elena.ruiz@example.com</email>
+    <state>FL</state>
+    <score>91.25</score>
+    <consent tcpa="false"/>
+  </lead>
+  <note><![CDATA[Scores above 80 go to the priority queue & get a same-day call.]]></note>
+</leads>

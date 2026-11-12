@@ -1,0 +1,15 @@
+{
+  "campaign": "Spring Auto Insurance",
+  "generatedAt": "2026-11-12T09:30:00Z",
+  "trackingId": 9007199254740993,
+  "leads": [
+    { "id": 1001, "name": "Priya Sharma", "email": "priya.s@example.com", "state": "CA", "score": 87.50,
+      "consent": { "tcpa": true, "capturedAt": "2026-11-10T14:02:11Z" }, "tags": ["auto", "bundle"] },
+    { "id": 1002, "name": "Marcus Lee", "email": "mlee@example.com", "state": "TX", "score": 64.0,
+      "consent": { "tcpa": true, "capturedAt": "2026-11-10T15:47:30Z" }, "tags": ["auto"] },
+    { "id": 1003, "name": "Elena Ruiz", "email": "elena.ruiz@example.com", "state": "FL", "score": 91.25,
+      "consent": { "tcpa": false, "capturedAt": null }, "tags": [] },
+    { "id": 1004, "name": "Tom O'Brien", "email": "tobrien@example.com", "state": "NY", "score": 72.00,
+      "consent": { "tcpa": true, "capturedAt": "2026-11-11T08:15:00Z" }, "tags": ["home", "auto"] }
+  ]
+}
